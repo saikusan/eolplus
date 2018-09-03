@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.1.0
+// @version      0.2.0
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -37,6 +37,10 @@
             console.log('User ID', this.user_id);
             console.log('Section ID', this.section_id);
             console.log('Thread ID', this.thread_id);
+
+            // Features
+            this.userPostsInThread();
+            this.usersPostsInThread();
         }
 
         getData() {
@@ -45,8 +49,29 @@
             this.getThread();
         }
 
+        userPostsInThread() {
+            if (this.user_id && this.thread_id) {
+                let user_posts_url = '/search.php?author_id=' + this.user_id + '&t=' + this.thread_id;
+                document.querySelector('.topic-actions .nogutter').innerHTML = '<a title="Mis mensajes en el hilo" href="' + user_posts_url + '" class="action-btn reply">Mis mensajes</a>' + document.querySelector('.topic-actions .nogutter').innerHTML;
+            }
+        }
+
+        usersPostsInThread() {
+            if (this.thread_id) {
+                let self = this;
+                let posts = document.querySelectorAll('.post');
+                posts.forEach(function (post, index) {
+                    let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
+                    let author_id = author_url.searchParams.get('u');
+                    let author_posts_url = '/search.php?author_id=' + author_id + '&t=' + self.thread_id;
+                    post.querySelector('.about').innerHTML += '<div class="links"><b><a href="' + author_posts_url + '" target="_blank" title="Mensajes del usuario en el hilo actual">Mensajes</a></b></div>';
+                });
+            }
+        }
+
+        // Data
         getUser() {
-            let user = this.performQuery('body');
+            let user = document.querySelector('body');
             if (user) {
                 this.user_id = user.dataset.user;
             } else {
@@ -55,7 +80,7 @@
         }
 
         getSection() {
-            let section = this.performQuery('input[name="fid[]"]');
+            let section = document.querySelector('input[name="fid[]"]');
             if (section) {
                 this.section_id = section.value;
             } else {
@@ -64,7 +89,7 @@
         }
 
         getThread() {
-            let thread = this.performQuery('input[name="t"]');
+            let thread = document.querySelector('input[name="t"]');
             if (thread) {
                 this.thread_id = thread.value;
             } else {
@@ -72,16 +97,7 @@
             }
         }
 
-        performQuery(query, all = false) {
-            let node = null;
-            if (all) {
-                node = document.querySelectorAll(query);
-            } else {
-                node = document.querySelector(query);
-            }
-            return node;
-        }
-
+        // Helpers
         getSetting(name) {
             try {
                 return localStorage.getItem(name);
@@ -95,7 +111,7 @@
                 localStorage.setItem(name, value);
                 return true;
             } catch (e) {
-                logConsole('Failed to set local storage item ' + name + ', ' + e + '.')
+                console.log('Failed to set local storage item ' + name + ', ' + e + '.')
                 return false;
             }
         }
