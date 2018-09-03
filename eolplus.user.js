@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.0.1
+// @version      0.1.0
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -25,7 +25,80 @@
     'use strict';
 
     class EOL {
-        constructor() {}
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            // General info
+            this.getData();
+
+            // Debug
+            console.log('User ID', this.user_id);
+            console.log('Section ID', this.section_id);
+            console.log('Thread ID', this.thread_id);
+        }
+
+        getData() {
+            this.getUser();
+            this.getSection();
+            this.getThread();
+        }
+
+        getUser() {
+            let user = this.performQuery('body');
+            if (user) {
+                this.user_id = user.dataset.user;
+            } else {
+                this.user_id = 0;
+            }
+        }
+
+        getSection() {
+            let section = this.performQuery('input[name="fid[]"]');
+            if (section) {
+                this.section_id = section.value;
+            } else {
+                this.section_id = 0;
+            }
+        }
+
+        getThread() {
+            let thread = this.performQuery('input[name="t"]');
+            if (thread) {
+                this.thread_id = thread.value;
+            } else {
+                this.thread_id = 0;
+            }
+        }
+
+        performQuery(query, all = false) {
+            let node = null;
+            if (all) {
+                node = document.querySelectorAll(query);
+            } else {
+                node = document.querySelector(query);
+            }
+            return node;
+        }
+
+        getSetting(name) {
+            try {
+                return localStorage.getItem(name);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        setSetting(name, value) {
+            try {
+                localStorage.setItem(name, value);
+                return true;
+            } catch (e) {
+                logConsole('Failed to set local storage item ' + name + ', ' + e + '.')
+                return false;
+            }
+        }
     }
 
     var init = new EOL();
