@@ -81,6 +81,24 @@
             }
             return node;
         }
+
+        getSetting(name) {
+            try {
+                return localStorage.getItem(name);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        setSetting(name, value) {
+            try {
+                localStorage.setItem(name, value);
+                return true;
+            } catch (e) {
+                logConsole('Failed to set local storage item ' + name + ', ' + e + '.')
+                return false;
+            }
+        }
     }
 
     var init = new EOL();
