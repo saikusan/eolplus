@@ -1,0 +1,11 @@
+{
+  "name": "eolplus",
+  "version": "0.0.1",
+  "description": "EOL+ es un script que añade nuevas funciones a ElOtrOLado.net",
+  "repository": "git@github.com:saikusan/eolplus.git",
+  "author": "Saikuro <saikuro@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.5.0"
+  }
+}

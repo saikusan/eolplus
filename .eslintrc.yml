@@ -1,0 +1,32 @@
+env:
+  browser: true
+  es6: true
+  greasemonkey: true
+extends: 'eslint:recommended'
+parserOptions:
+  ecmaVersion: 2015
+rules:
+  indent:
+    - error
+    - 4
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  no-constant-condition:
+    - error
+    -
+      checkLoops: false
+  no-var:
+    - error
+  prefer-const:
+    - error
+  no-eval:
+    - error
+  no-implied-eval:
+    - error
