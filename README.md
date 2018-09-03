@@ -1,6 +1,12 @@
 # EOL+
 
 Este script está pensado para añadir mejoras y nuevas funciones a [ElOtroLado.net], entre las que se incluyen:
+* Ver propios mensajes en el subforo actual
+* Ver propios mensajes en el hilo actual
+* Ver mensajes de un usuario concreto en el hilo actual
+
+Próximas funciones:
+* Resaltado de hilos en C/V gestionable con filtros y ocultación opcional de hilos que no interesan
 
 ## Instalación
 
