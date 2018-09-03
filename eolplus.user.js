@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.2.0
+// @version      0.2.1
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -39,6 +39,7 @@
             console.log('Thread ID', this.thread_id);
 
             // Features
+            this.userPostsInSection();
             this.userPostsInThread();
             this.usersPostsInThread();
         }
@@ -49,10 +50,17 @@
             this.getThread();
         }
 
+        userPostsInSection() {
+            if (this.user_id && this.section_id && !this.thread_id) {
+                let user_posts_url = 'https://www.elotrolado.net/search.php?author_id=' + this.user_id + '&fid[]=' + this.section_id;
+                document.querySelector('.forum-actions .nogutter').insertAdjacentHTML("afterbegin", '<a title="Mis mensajes en el foro actual" href="' + user_posts_url + '" class="action-btn reply">Mis mensajes</a>');
+            }
+        }
+
         userPostsInThread() {
             if (this.user_id && this.thread_id) {
                 let user_posts_url = '/search.php?author_id=' + this.user_id + '&t=' + this.thread_id;
-                document.querySelector('.topic-actions .nogutter').innerHTML = '<a title="Mis mensajes en el hilo" href="' + user_posts_url + '" class="action-btn reply">Mis mensajes</a>' + document.querySelector('.topic-actions .nogutter').innerHTML;
+                document.querySelector('.topic-actions .nogutter').insertAdjacentHTML("afterbegin", '<a title="Mis mensajes en el hilo" href="' + user_posts_url + '" class="action-btn reply">Mis mensajes</a>');
             }
         }
 
@@ -64,7 +72,7 @@
                     let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
                     let author_id = author_url.searchParams.get('u');
                     let author_posts_url = '/search.php?author_id=' + author_id + '&t=' + self.thread_id;
-                    post.querySelector('.about').innerHTML += '<div class="links"><b><a href="' + author_posts_url + '" target="_blank" title="Mensajes del usuario en el hilo actual">Mensajes</a></b></div>';
+                    post.querySelector('.about').insertAdjacentHTML("beforeend", '<div class="links"><b><a href="' + author_posts_url + '" target="_blank" title="Mensajes del usuario en el hilo actual">Mensajes</a></b></div>');
                 });
             }
         }
