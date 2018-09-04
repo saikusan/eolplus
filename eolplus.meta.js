@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.4.0
+// @version      0.4.1
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues

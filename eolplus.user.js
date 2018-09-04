@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.4.0
+// @version      0.4.1
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -77,7 +77,7 @@
                 let self = this;
                 let posts = document.querySelectorAll('.post');
                 posts.forEach(function (post, index) {
-                   let about = post.querySelector('.about');
+                    let about = post.querySelector('.about');
                     if (about) {
                         let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
                         let author_id = author_url.searchParams.get('u');
@@ -93,19 +93,21 @@
                 let self = this;
                 let html = '<div class="cv-alert" style="position: absolute; right: 0; top: 0; bottom: 0; width: 80px; overflow: hidden;"><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #395a2f; font-size: 90px; line-height: 1; opacity: 0.15; transform: rotate(20deg); position: absolute; left: 25px; top: -28px;"></i></div>';
                 let terms = this.cv_highlights.split(',');
-                let threads = document.querySelectorAll('.topic');
+                let threads = document.querySelectorAll('.topic:not(.wikir):not(.announcement)');
 
                 console.log('Buscando los siguientes términos', terms);
 
                 threads.forEach(function (thread, index) {
                     terms.forEach(function (term, index) {
                         let title = thread.querySelector('.title').textContent;
+                        let alert = thread.querySelector('.cv-alert');
                         if (title.toLowerCase().includes(term.toLowerCase())) {
                             thread.querySelector('.lastpost').style.zIndex = '2';
                             thread.style.backgroundColor = '#d1ecd1';
-                            thread.insertAdjacentHTML("beforeend", html);
+                            if (!alert) {
+                                thread.insertAdjacentHTML("beforeend", html);
+                            }
                         } else {
-                            let alert = thread.querySelector('.cv-alert');
                             if (alert) {
                                 thread.style.backgroundColor = '#eaf5ea';
                                 thread.removeChild(alert);
