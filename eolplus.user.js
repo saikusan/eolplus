@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.3.2
+// @version      0.4.0
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -30,8 +30,8 @@
             // C/V forums IDs
             this.cv_ids = ['212', '97', '164', '98', '99', '100'];
 
-            // Config
-            this.cv_highlights = this.getSetting('cv_highlights');
+            // Settings
+            this.loadSettings();
 
             // Start
             this.init();
@@ -77,7 +77,7 @@
                 let self = this;
                 let posts = document.querySelectorAll('.post');
                 posts.forEach(function (post, index) {
-                    let about = post.querySelector('.about');
+                   let about = post.querySelector('.about');
                     if (about) {
                         let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
                         let author_id = author_url.searchParams.get('u');
@@ -90,7 +90,8 @@
 
         highlightCVThreads() {
             if (this.cv_ids.includes(this.section_id) && this.cv_highlights) {
-                let html = '<div style="position: absolute; right: 0; top: 0; bottom: 0; width: 80px; overflow: hidden;"><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #395a2f; font-size: 90px; line-height: 1; opacity: 0.15; transform: rotate(20deg); position: absolute; left: 25px; top: -28px;"></i></div>';
+                let self = this;
+                let html = '<div class="cv-alert" style="position: absolute; right: 0; top: 0; bottom: 0; width: 80px; overflow: hidden;"><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #395a2f; font-size: 90px; line-height: 1; opacity: 0.15; transform: rotate(20deg); position: absolute; left: 25px; top: -28px;"></i></div>';
                 let terms = this.cv_highlights.split(',');
                 let threads = document.querySelectorAll('.topic');
 
@@ -103,6 +104,17 @@
                             thread.querySelector('.lastpost').style.zIndex = '2';
                             thread.style.backgroundColor = '#d1ecd1';
                             thread.insertAdjacentHTML("beforeend", html);
+                        } else {
+                            let alert = thread.querySelector('.cv-alert');
+                            if (alert) {
+                                thread.style.backgroundColor = '#eaf5ea';
+                                thread.removeChild(alert);
+                            }
+                            if (self.cv_hide > 0) {
+                                thread.style.display = 'none';
+                            } else {
+                                thread.style.display = 'block';
+                            }
                         }
                     });
                 });
@@ -130,6 +142,7 @@
 
         cvSettingsHtml() {
             if (this.cv_ids.includes(this.section_id)) {
+                let self = this;
                 let html = `<div class="cv-settings">
                     <label>Resaltar hilos con los siguientes términos</label>
                     <div class="input-group">
@@ -139,24 +152,41 @@
                         </div>
                     </div>
                     <p class="help-block text-muted"><i>Separa cada término con una coma, p.e.: ps4,switch,xbox one,pokemon</i></p>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="cv_hide" value="" ${this.cv_hide > 0 ? 'checked' : ''}>Ocultar hilos que no coincidan con la búsqueda</label>
+                    </div>
                 </div>`;
                 document.querySelector('.forum-actions').insertAdjacentHTML("beforeend", html);
+                // Events
                 document.querySelector('.cv-settings button').addEventListener('click', () => {
                     this.saveCVSettings();
                 })
-                document.querySelector('.cv-settings input').addEventListener('keyup', (e) => {
+                document.querySelector('.cv-settings [name="cv_highlights"]').addEventListener('keyup', (e) => {
                     if (e.keyCode == 13) {
                         this.saveCVSettings();
                     }
                 });
+                document.querySelector('.cv-settings [name="cv_hide"]').addEventListener('click', (e) => {
+                    if (this.setSetting('cv_hide', e.target.checked ? 1 : 0)) {
+                        self.highlightCVThreads();
+                    }
+                })
             }
         }
 
         // Settings
+        loadSettings() {
+            this.cv_highlights = this.getSetting('cv_highlights');
+            this.cv_hide = this.getSetting('cv_hide');
+
+            console.log('Highlights', this.cv_highlights);
+            console.log('Hide', this.cv_hide);
+        }
+
         saveCVSettings() {
             let value = document.querySelector('[name="cv_highlights"]').value;
             if (this.setSetting('cv_highlights', value)) {
-                location.reload();
+                this.highlightCVThreads();
             }
         }
 
@@ -206,6 +236,7 @@
         setSetting(name, value) {
             try {
                 localStorage.setItem(name, value);
+                this.loadSettings();
                 return true;
             } catch (e) {
                 console.log('Failed to set local storage item ' + name + ', ' + e + '.')

@@ -5,9 +5,9 @@ Este script está pensado para añadir mejoras y nuevas funciones a [ElOtroLado.
 * Ver propios mensajes en el hilo actual
 * Ver mensajes de un usuario concreto en el hilo actual
 * Resaltado de hilos en C/V gestionable con filtros
+* Ocultar hilos en C/V que no coincidan con la búsqueda
 
 Próximas funciones:
-* Ocultar hilos en C/V no resaltados
 * Filtros de C/V independientes por subforo
 
 Si tenéis sugerencias, no dudés en contactarme mediante el foro: [MP][3]
