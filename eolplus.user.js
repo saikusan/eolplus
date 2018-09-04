@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.3.1
+// @version      0.3.2
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -77,10 +77,13 @@
                 let self = this;
                 let posts = document.querySelectorAll('.post');
                 posts.forEach(function (post, index) {
-                    let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
-                    let author_id = author_url.searchParams.get('u');
-                    let author_posts_url = '/search.php?author_id=' + author_id + '&t=' + self.thread_id;
-                    post.querySelector('.about').insertAdjacentHTML("beforeend", '<div class="links"><b><a href="' + author_posts_url + '" target="_blank" title="Mensajes del usuario en el hilo actual">Mensajes</a></b></div>');
+                    let about = post.querySelector('.about');
+                    if (about) {
+                        let author_url = new URL(post.querySelector('.author').getAttribute('href'), window.location.origin);
+                        let author_id = author_url.searchParams.get('u');
+                        let author_posts_url = '/search.php?author_id=' + author_id + '&t=' + self.thread_id;
+                        about.insertAdjacentHTML("beforeend", '<div class="links"><b><a href="' + author_posts_url + '" target="_blank" title="Mensajes del usuario en el hilo actual">Mensajes</a></b></div>');
+                    }
                 });
             }
         }
