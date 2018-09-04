@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.3.0
+// @version      0.3.1
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -126,25 +126,27 @@
         }
 
         cvSettingsHtml() {
-            let html = `<div class="cv-settings">
-                <label>Resaltar hilos con los siguientes términos</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" name="cv_highlights" placeholder="Términos" value="${this.cv_highlights ? this.cv_highlights : ''}">
-                    <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Guardar</button>
+            if (this.cv_ids.includes(this.section_id)) {
+                let html = `<div class="cv-settings">
+                    <label>Resaltar hilos con los siguientes términos</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="cv_highlights" placeholder="Términos" value="${this.cv_highlights ? this.cv_highlights : ''}">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Guardar</button>
+                        </div>
                     </div>
-                </div>
-                <p class="help-block text-muted"><i>Separa cada término con una coma, p.e.: ps4,switch,xbox one,pokemon</i></p>
-            </div>`;
-            document.querySelector('.forum-actions').insertAdjacentHTML("beforeend", html);
-            document.querySelector('.cv-settings button').addEventListener('click', () => {
-                this.saveCVSettings();
-            })
-            document.querySelector('.cv-settings input').addEventListener('keyup', (e) => {
-                if (e.keyCode == 13) {
+                    <p class="help-block text-muted"><i>Separa cada término con una coma, p.e.: ps4,switch,xbox one,pokemon</i></p>
+                </div>`;
+                document.querySelector('.forum-actions').insertAdjacentHTML("beforeend", html);
+                document.querySelector('.cv-settings button').addEventListener('click', () => {
                     this.saveCVSettings();
-                }
-            });
+                })
+                document.querySelector('.cv-settings input').addEventListener('keyup', (e) => {
+                    if (e.keyCode == 13) {
+                        this.saveCVSettings();
+                    }
+                });
+            }
         }
 
         // Settings
