@@ -1,7 +1,7 @@
 {
   "name": "eolplus",
-  "version": "0.0.1",
-  "description": "EOL+ es un script que añade nuevas funciones a ElOtrOLado.net",
+  "version": "0.4.1",
+  "description": "EOL+ es un script que añade nuevas funciones a ElOtroLado.net",
   "repository": "git@github.com:saikusan/eolplus.git",
   "author": "Saikuro <saikuro@gmail.com>",
   "license": "MIT",
