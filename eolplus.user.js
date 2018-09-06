@@ -4,7 +4,7 @@
 // @description  Mejoras y nuevas funciones para ElOtroLado.net.
 // @author       Saikuro
 // @copyright    2018+, Saikuro
-// @version      0.4.1
+// @version      0.4.2
 // @license      MIT
 // @homepageURL  https://github.com/saikusan/eolplus
 // @supportURL   https://github.com/saikusan/eolplus/issues
@@ -92,33 +92,32 @@
             if (this.cv_ids.includes(this.section_id) && this.cv_highlights) {
                 let self = this;
                 let html = '<div class="cv-alert" style="position: absolute; right: 0; top: 0; bottom: 0; width: 80px; overflow: hidden;"><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: #395a2f; font-size: 90px; line-height: 1; opacity: 0.15; transform: rotate(20deg); position: absolute; left: 25px; top: -28px;"></i></div>';
-                let terms = this.cv_highlights.split(',');
+                let terms = new RegExp(this.cv_highlights.replace(/,/g, '|'), 'gi');
                 let threads = document.querySelectorAll('.topic:not(.wikir):not(.announcement)');
 
-                console.log('Buscando los siguientes términos', terms);
+                console.log('Buscando los siguientes términos', this.cv_highlights);
 
                 threads.forEach(function (thread, index) {
-                    terms.forEach(function (term, index) {
-                        let title = thread.querySelector('.title').textContent;
-                        let alert = thread.querySelector('.cv-alert');
-                        if (title.toLowerCase().includes(term.toLowerCase())) {
-                            thread.querySelector('.lastpost').style.zIndex = '2';
-                            thread.style.backgroundColor = '#d1ecd1';
-                            if (!alert) {
-                                thread.insertAdjacentHTML("beforeend", html);
-                            }
-                        } else {
-                            if (alert) {
-                                thread.style.backgroundColor = '#eaf5ea';
-                                thread.removeChild(alert);
-                            }
-                            if (self.cv_hide > 0) {
-                                thread.style.display = 'none';
-                            } else {
-                                thread.style.display = 'block';
-                            }
+                    let title = thread.querySelector('.title').textContent.trim();
+                    let alert = thread.querySelector('.cv-alert');
+
+                    if (title.match(terms)) {
+                        thread.querySelector('.lastpost').style.zIndex = '2';
+                        thread.style.backgroundColor = '#d1ecd1';
+                        if (!alert) {
+                            thread.insertAdjacentHTML("beforeend", html);
                         }
-                    });
+                    } else {
+                        if (alert) {
+                            thread.style.backgroundColor = '#eaf5ea';
+                            thread.removeChild(alert);
+                        }
+                        if (self.cv_hide > 0) {
+                            thread.style.display = 'none';
+                        } else {
+                            thread.style.display = 'block';
+                        }
+                    }
                 });
             }
         }
